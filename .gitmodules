@@ -1,0 +1,3 @@
+[submodule "Lessons"]
+	path = Lessons
+	url = git@github.com:GonzagaCPSC325/Lessons.git
