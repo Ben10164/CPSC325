@@ -69,3 +69,6 @@ if __name__ == "__main__":
     print(zag_username)
     user_ser = fetch_user_account_info(client, zag_username)
     print(user_ser)
+
+
+    zag_user_id = 602989093
