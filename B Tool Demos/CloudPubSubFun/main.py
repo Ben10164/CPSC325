@@ -1,6 +1,12 @@
+import os
 import json
 import tweepy
 import pandas as pd
+from google.cloud import pubsub
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_keys.json"
+
+TOPIC_PATH = "projects/eternal-ship-376417/topics/tweets"
 
 
 class TweetStreamer(tweepy.StreamingClient):
@@ -31,6 +37,16 @@ class TweetStreamer(tweepy.StreamingClient):
         values = {"tweet_id": tweet.id, "author_id": tweet.author_id,
                   "created_at": created_at, "text": tweet.text}
         print(values)
+        publish_tweet(values)
+
+
+def publish_tweet(tweet_dict):
+    # need to pip install google-cloud-pubsub and import it
+    publisher_client = pubsub.PublisherClient()  # this code is
+    # going to authenticate with google_keys.json
+    tweet_str = json.dumps(tweet_dict).encode("utf-8")
+    future = publisher_client.publish(TOPIC_PATH, tweet_str)
+    print("published:", future.result())
 
 
 if __name__ == "__main__":
